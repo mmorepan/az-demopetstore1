@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "d1030a0e-a8c6-48bd-84e0-2322c181ca30",
+		"name": "DemoPetstore-v1.0-cp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Oauth 2.0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6b80deb2-4669-4891-a8a6-86f7894f2bf4",
+						"exec": [
+							"var jsonResponse = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set(\"access_token\", jsonResponse.access_token)\r",
+							"// pm.collectionVariables.set(\"refresh_token\", jsonResponse.refresh_token)\r",
+							"// pm.collectionVariables.set(\"expires_on\", jsonResponse.expires_on)\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ec0d4f93-7910-45b9-af1d-a6f4732795b3",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-url-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "{{nm_oauth_clientid}}",
+							"type": "text"
+						},
+						{
+							"key": "resource",
+							"value": "{{nm_oauth_resource}}",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "{{nm_oauth_redirecturi}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "{{nm_oauth_granttype}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{nm_oauth_clientsecret}}",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "{{nm_oauth_refreshtoken}}",
+							"type": "text"
+						}
+					],
+					"options": {
+						"urlencoded": {}
+					}
+				},
+				"url": {
+					"raw": "{{nm_oauth_tokenurl}}",
+					"host": [
+						"{{nm_oauth_tokenurl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9c474aeb-82dd-457f-a31a-33735e0bdda5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3c566ce2-c4bf-47b6-b259-6b8b8bc25e91",
+						"exec": [
+							"console.log(pm.collectionVariables.get(\"another_param_1\"))\r",
+							"console.log(pm.collectionVariables.get(\"another_param_2\"))\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{nm_api_subs_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{nm_api_baseurl}}/arm/demopetstore/pets/4",
+					"host": [
+						"{{nm_api_baseurl}}"
+					],
+					"path": [
+						"arm",
+						"demopetstore",
+						"pets",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "bf047c22-60f3-4eda-82ad-d76c9c394750",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "94f53cb8-7a07-4c4d-a4f5-9bfdf970cb37",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{nm_api_subs_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": 0,\r\n    \"message\": \"string\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{nm_api_baseurl}}/arm/demopetstore/pets",
+					"host": [
+						"{{nm_api_baseurl}}"
+					],
+					"path": [
+						"arm",
+						"demopetstore",
+						"pets"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "201 Create - 01",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "87ede122a7dd4958aa5ad90c4ee58c71",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://apimngr-genesis-dev.azure-api.net/demo/petstore/pets",
+							"protocol": "https",
+							"host": [
+								"apimngr-genesis-dev",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"demo",
+								"petstore",
+								"pets"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						},
+						{
+							"key": "Content-Length",
+							"value": "84"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"54-Vus37zjZTpmRxkJg+XN0DJBYCks\""
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Expect-CT",
+							"value": "max-age=604800,report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\""
+						},
+						{
+							"key": "CF-RAY",
+							"value": "5981c80de926cf3c-IAD"
+						},
+						{
+							"key": "cf-request-id",
+							"value": "02e4fb5cb00000cf3c120a7200000001"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "__cfduid=ddb067cafb7553638039cdf356ddf70b41590268413; expires=Mon, 22-Jun-20 21:13:33 GMT; path=/; domain=.reqres.in; HttpOnly; SameSite=Lax; Secure"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 May 2020 21:13:33 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"morpheus\",\n    \"job\": \"leader\",\n    \"id\": \"510\",\n    \"createdAt\": \"2020-05-23T21:13:33.266Z\"\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"id": "4f6b3da6-28be-4ef5-a290-d5f25c480de9",
+			"key": "access_token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Imh1Tjk1SXZQZmVocTM0R3pCRFoxR1hHaXJuTSIsImtpZCI6Imh1Tjk1SXZQZmVocTM0R3pCRFoxR1hHaXJuTSJ9.eyJhdWQiOiI5MGQ4ZjRkNy1hZmNjLTRmZjQtOTM1Mi05ZmYyODJmZWJlYTQiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC85Mjk2MTZmZi04MThjLTQ1NDEtYjA3MS0yYmQ2YWI5MTJlODgvIiwiaWF0IjoxNTk1NzcwMDE2LCJuYmYiOjE1OTU3NzAwMTYsImV4cCI6MTU5NTc3MzkxNiwiYWNyIjoiMSIsImFpbyI6IkFXUUFtLzhRQUFBQUNwSC9DWnU3V3BROEdsbWFubHlHUTUyMjFvY2t6c3lQQXVMZnFUOWRXaVZSeERHYWFJTDl0U2FyOGRYNi9sQno1aXZCQnBJbGtkdFNydGNrbzVnd01mRmlFcWM2WjQ1WjFlNytiWjZnbGxwNFhJWGQ3a1FJRjhoSXBDWlZyVVZKIiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6ImM3NDc2MDA0LTIwMDAtNGFmMC1hZGI5LWYyYTIxM2ViMTcxYSIsImFwcGlkYWNyIjoiMSIsImVtYWlsIjoibWFydGluLmpob24ubW9yZS5wYW50YUBldmVyaXMuY29tIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMzA0OGRjODctNDNmMC00MTAwLTlhY2ItYWUxOTcxYzc5Mzk1LyIsImlwYWRkciI6IjE4MS42NS43NC4yMjAiLCJuYW1lIjoiTWFydGluIEpob24gTW9yZSBQYW50YSIsIm9pZCI6IjljYjQzNDQyLTA0ZjktNGU0Mi05ZTAyLTY4NDkwOWViMTZlYyIsInNjcCI6IkxlZXIuRGVtb3BldHN0b3JlIiwic3ViIjoiSkxwYUhSTl8zSHYwMWw4V05Zb2VtOV82YjFTaDBXX0tsVDVyVlhzS3pWWSIsInRpZCI6IjkyOTYxNmZmLTgxOGMtNDU0MS1iMDcxLTJiZDZhYjkxMmU4OCIsInVuaXF1ZV9uYW1lIjoibWFydGluLmpob24ubW9yZS5wYW50YUBldmVyaXMuY29tIiwidXRpIjoieEl2SnBfSTVUazYyWWp2Mmx3SVRBQSIsInZlciI6IjEuMCJ9.Va6LoVLjzf8JI8F042Gc_rs-tyN1STY9limOVG98RX-wLHhOQdb-_s8v9dzo1iaKu42gywwct3dcRNkW7v4Dn45PJIA5TOJ2yJpmRUcJtXx8ulLobkowSpuAeIDlF8Jgj4bU12D7uRi5frHxKQM8sjcb5Nb-bV2VK35zzF_jr5--vfmWLRSFLj5JL-ctRMKrNY7vqgzGryvwHj6N4f2-4e4IFrAkD9nOgMGERd8fLqwXq9xd7fMxK6BYx6jttZuSSO-LTqj5mfF5wrEpBw_YZXEm4e53M8-09jZUvVcUnS31f4LfhT03J96zNCmrRr45Khnko2NrepPJPUNxay1mRw"
+		},
+		{
+			"id": "89bbeac8-b261-4ef0-af8f-5ab5647b1626",
+			"key": "expires_on",
+			"value": "1595707134"
+		},
+		{
+			"id": "25379880-4316-4a83-b608-2100baaf1891",
+			"key": "refresh_token",
+			"value": "AQABAAAAAAAGV_bv21oQQ4ROqh0_1-tAt5jTiNnSAHYi8Ox5w2gxs92daAGLZ1zGh6GRKs_SqKs00RRe8oGl9lswogTu2-z0JfYAMyOs5Oox02KxloP9N21FtnJnT9xcnB9A8IFesIuAD-iFOwVBhkSGO3CFiWtJ8_Xe02OQquheA92Kn3xPikRXFSyA8TyGt1sJ0kQsG5yOJMykgp6aZo4EAcMLaUWYeN-p-_vgxlj6JHeFcqtfZlfCqV7CaOhRVFk4Fc7YskV2ZY9B_V9cnbLx6hsj6ax_9UNx28ua2PIQe3Upet13GfnDuCTC0_FxVcg0weLLzqCCdAY9QaepWjVI5zfa9ocqmjRrkCsyE47VSnRswQteLb0n2AISbUcP-GwgBVD5TffPuuTLFJaksDmHWIc3LNj6nlVBOqCS7Ri_cuR0qglUjXgmpA6c4yqOyyqROtB5kx-iR7uczwSRlpQ4OwC-uAke8XUrwi9pBSy8r1vNjLWEGUpm2uWFxQtK83RiHkxpxDNtFJzGL_4GwB4vOxD_PheLfLWgEo1WdBXSzrHMkZEjL4okkj-GFXfm63MKptcVlV6ZLMCo26BKonLpurRz7fkbsq1ujlpVCQHSVL4jX60lzjd3Ikg2SzCGXkIReAu3n_lkZUaj-8YlPDNki2lNUTkTmoSxGZMoqUKloNxlL1Qjg2E4mwcOW0pnzepX87HzDUT6DeUXxtRHbRiu4Vdd1ppv-HrPQ9yoKduuVEPti_2-A3I_58xAt-nLRnIVRyx22YRV-F481sFBCqlUGhViYwuPVZ0KfaX4Vg65FeYBp1ES9FN0ZJ3MXHgAbJ-TADclbRKnrAgPk1KOYFDuimbl8cgiJLLivyK9vUKJyDrcSuichoaXTe13XHl-0FxcgMsnD0LYwyQGebLIM8ZP2whK2IIVB9Xn-vVxzto-bFM5dBKEr3cpO-frLConqyJptl-OK5QRjp0yPnJ13oW4lDPTmYmLREabLA6F1dMkyYDwBbYsibmcPNvwctQQ5cazUcD0Ls91_NVvpEVAOiM9UHUmnNWj5yBHle3DOR2Wfhc6zW-KVybmHYR9F9Y3PC5DV5pLwuW4wnXec9ucUTGefP9JCqEg2EY1efsPOKVYyiuJpcwFMFEXGiQ66yYlJET2xrtejSF3dCRgwnWMLKaRan7r1XgL73vQ69ZP5jBbUbvd4dykwiDNYtK-HgJg62C0TYfVUNC9Qx-8dm12r6aTNlJFJam1CIblgy7xHQmVIb4zQsJ8Urz8MeywVtuXKDsEfHyJEJggAA"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
