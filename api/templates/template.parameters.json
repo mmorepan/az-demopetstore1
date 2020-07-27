@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "value": "APIMNGR-genesis-dev"
+    },
+    "LinkedTemplatesBaseUrl": {
+      "value": ""
+    },
+    "PolicyXMLBaseUrl": {
+      "value": "policies"
+    },
+    "BackendServiceUrl": {
+      "value": "https://example.com"
+    },
+    "OauthServerId": {
+      "value": "<To be completed by Azure DevOps Pipeline>"
+    },
+    "ProductsApiName": {
+      "value": {
+        "demopetstoreproduct": "product_demopetstoreproduct_to_be_completed"
+      }
+    },
+    "NamedValues": {
+      "value": {
+        "demoarmextra1": "<To be completed by Azure DevOps Pipeline>",
+        "demoarmidjwtopenidconfigurl": "<To be completed by Azure DevOps Pipeline>",
+        "demoarmappjwtaudience": "<To be completed by Azure DevOps Pipeline>"
+      }
+    },
+    "ApiLoggerId": {
+      "value": {
+        "apilog": {
+          "applicationinsights": "<ApplicationInsights Id>",
+          "azuremonitor": "<Azuremonitor Id>"
+        }
+      }
+    }
+  },
+  "variables": {},
+  "resources": [],
+  "outputs": {}
+}
