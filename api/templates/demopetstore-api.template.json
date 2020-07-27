@@ -100,6 +100,9 @@
                   },
                   "message": {
                     "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
                   }
                 }
               }
@@ -140,6 +143,7 @@
             "representations": [
               {
                 "contentType": "application/json",
+                "sample": "",
                 "schemaId": "5f1c714da6ad26110cdf4e94",
                 "typeName": "Error"
               }
@@ -152,6 +156,19 @@
             "representations": [
               {
                 "contentType": "application/json",
+                "schemaId": "5f1c714da6ad26110cdf4e94",
+                "typeName": "Error"
+              }
+            ],
+            "headers": []
+          },
+          {
+            "statusCode": 503,
+            "description": "Service Unavailable error",
+            "representations": [
+              {
+                "contentType": "application/json",
+                "sample": "",
                 "schemaId": "5f1c714da6ad26110cdf4e94",
                 "typeName": "Error"
               }
