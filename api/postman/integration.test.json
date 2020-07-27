@@ -94,66 +94,6 @@
 			"response": []
 		},
 		{
-			"name": "get",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "9c474aeb-82dd-457f-a31a-33735e0bdda5",
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "3c566ce2-c4bf-47b6-b259-6b8b8bc25e91",
-						"exec": [
-							"console.log(pm.collectionVariables.get(\"another_param_1\"))\r",
-							"console.log(pm.collectionVariables.get(\"another_param_2\"))\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Ocp-Apim-Subscription-Key",
-						"value": "{{nm_api_subs_key}}",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{access_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{nm_api_baseurl}}/arm/demopetstore/pets/4",
-					"host": [
-						"{{nm_api_baseurl}}"
-					],
-					"path": [
-						"arm",
-						"demopetstore",
-						"pets",
-						"4"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Create",
 			"event": [
 				{
@@ -171,6 +111,9 @@
 					"script": {
 						"id": "94f53cb8-7a07-4c4d-a4f5-9bfdf970cb37",
 						"exec": [
+							"var jsonResponse = pm.response.json()\r",
+							"console.log(pm.environment.get(\"another_param_1\"))\r",
+							"pm.collectionVariables.set(\"pet_id\", jsonResponse.id)\r",
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
@@ -308,23 +251,87 @@
 					"body": "{\n    \"name\": \"morpheus\",\n    \"job\": \"leader\",\n    \"id\": \"510\",\n    \"createdAt\": \"2020-05-23T21:13:33.266Z\"\n}"
 				}
 			]
+		},
+		{
+			"name": "get",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9c474aeb-82dd-457f-a31a-33735e0bdda5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3c566ce2-c4bf-47b6-b259-6b8b8bc25e91",
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Ocp-Apim-Subscription-Key",
+						"value": "{{nm_api_subs_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{nm_api_baseurl}}/arm/demopetstore/pets/{{pet_id}}",
+					"host": [
+						"{{nm_api_baseurl}}"
+					],
+					"path": [
+						"arm",
+						"demopetstore",
+						"pets",
+						"{{pet_id}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [
 		{
-			"id": "4f6b3da6-28be-4ef5-a290-d5f25c480de9",
+			"id": "b6e806c7-9ef8-4ec9-865f-6cdccaa23bee",
 			"key": "access_token",
-			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Imh1Tjk1SXZQZmVocTM0R3pCRFoxR1hHaXJuTSIsImtpZCI6Imh1Tjk1SXZQZmVocTM0R3pCRFoxR1hHaXJuTSJ9.eyJhdWQiOiI5MGQ4ZjRkNy1hZmNjLTRmZjQtOTM1Mi05ZmYyODJmZWJlYTQiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC85Mjk2MTZmZi04MThjLTQ1NDEtYjA3MS0yYmQ2YWI5MTJlODgvIiwiaWF0IjoxNTk1NzcwMDE2LCJuYmYiOjE1OTU3NzAwMTYsImV4cCI6MTU5NTc3MzkxNiwiYWNyIjoiMSIsImFpbyI6IkFXUUFtLzhRQUFBQUNwSC9DWnU3V3BROEdsbWFubHlHUTUyMjFvY2t6c3lQQXVMZnFUOWRXaVZSeERHYWFJTDl0U2FyOGRYNi9sQno1aXZCQnBJbGtkdFNydGNrbzVnd01mRmlFcWM2WjQ1WjFlNytiWjZnbGxwNFhJWGQ3a1FJRjhoSXBDWlZyVVZKIiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6ImM3NDc2MDA0LTIwMDAtNGFmMC1hZGI5LWYyYTIxM2ViMTcxYSIsImFwcGlkYWNyIjoiMSIsImVtYWlsIjoibWFydGluLmpob24ubW9yZS5wYW50YUBldmVyaXMuY29tIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMzA0OGRjODctNDNmMC00MTAwLTlhY2ItYWUxOTcxYzc5Mzk1LyIsImlwYWRkciI6IjE4MS42NS43NC4yMjAiLCJuYW1lIjoiTWFydGluIEpob24gTW9yZSBQYW50YSIsIm9pZCI6IjljYjQzNDQyLTA0ZjktNGU0Mi05ZTAyLTY4NDkwOWViMTZlYyIsInNjcCI6IkxlZXIuRGVtb3BldHN0b3JlIiwic3ViIjoiSkxwYUhSTl8zSHYwMWw4V05Zb2VtOV82YjFTaDBXX0tsVDVyVlhzS3pWWSIsInRpZCI6IjkyOTYxNmZmLTgxOGMtNDU0MS1iMDcxLTJiZDZhYjkxMmU4OCIsInVuaXF1ZV9uYW1lIjoibWFydGluLmpob24ubW9yZS5wYW50YUBldmVyaXMuY29tIiwidXRpIjoieEl2SnBfSTVUazYyWWp2Mmx3SVRBQSIsInZlciI6IjEuMCJ9.Va6LoVLjzf8JI8F042Gc_rs-tyN1STY9limOVG98RX-wLHhOQdb-_s8v9dzo1iaKu42gywwct3dcRNkW7v4Dn45PJIA5TOJ2yJpmRUcJtXx8ulLobkowSpuAeIDlF8Jgj4bU12D7uRi5frHxKQM8sjcb5Nb-bV2VK35zzF_jr5--vfmWLRSFLj5JL-ctRMKrNY7vqgzGryvwHj6N4f2-4e4IFrAkD9nOgMGERd8fLqwXq9xd7fMxK6BYx6jttZuSSO-LTqj5mfF5wrEpBw_YZXEm4e53M8-09jZUvVcUnS31f4LfhT03J96zNCmrRr45Khnko2NrepPJPUNxay1mRw"
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Imh1Tjk1SXZQZmVocTM0R3pCRFoxR1hHaXJuTSIsImtpZCI6Imh1Tjk1SXZQZmVocTM0R3pCRFoxR1hHaXJuTSJ9.eyJhdWQiOiI5MGQ4ZjRkNy1hZmNjLTRmZjQtOTM1Mi05ZmYyODJmZWJlYTQiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC85Mjk2MTZmZi04MThjLTQ1NDEtYjA3MS0yYmQ2YWI5MTJlODgvIiwiaWF0IjoxNTk1ODA3MTcwLCJuYmYiOjE1OTU4MDcxNzAsImV4cCI6MTU5NTgxMTA3MCwiYWNyIjoiMSIsImFpbyI6IkFXUUFtLzhRQUFBQU4yRlY1MlNOam5hMzl0NEh6N3ZvV0pPTWFZNEhMOG1wc2FJc0dacUZNZHUxdmMyY1ZFVmFYcVlzRXQ4YnVTc3NpNUhsanAyZTE2bzBRZVp5NlJnMHlCRlVGNm1NVGtncFkrN0YvTTVHd2xDdG9IZzBpc2VXcW9WdFl5L2RrTlN2IiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6ImM3NDc2MDA0LTIwMDAtNGFmMC1hZGI5LWYyYTIxM2ViMTcxYSIsImFwcGlkYWNyIjoiMSIsImVtYWlsIjoibWFydGluLmpob24ubW9yZS5wYW50YUBldmVyaXMuY29tIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMzA0OGRjODctNDNmMC00MTAwLTlhY2ItYWUxOTcxYzc5Mzk1LyIsImlwYWRkciI6IjE4MS42NS43NC4yMjAiLCJuYW1lIjoiTWFydGluIEpob24gTW9yZSBQYW50YSIsIm9pZCI6IjljYjQzNDQyLTA0ZjktNGU0Mi05ZTAyLTY4NDkwOWViMTZlYyIsInNjcCI6IkxlZXIuRGVtb3BldHN0b3JlIiwic3ViIjoiSkxwYUhSTl8zSHYwMWw4V05Zb2VtOV82YjFTaDBXX0tsVDVyVlhzS3pWWSIsInRpZCI6IjkyOTYxNmZmLTgxOGMtNDU0MS1iMDcxLTJiZDZhYjkxMmU4OCIsInVuaXF1ZV9uYW1lIjoibWFydGluLmpob24ubW9yZS5wYW50YUBldmVyaXMuY29tIiwidXRpIjoiY3BJWjEzTHBMa2FVSnZJOWJRVWVBQSIsInZlciI6IjEuMCJ9.WZLxpnu-wPqjydiQm4BarTVQYiZfzWeoeuIuDT-BkH32hhL9xGEpObtazV5OxAdkRgXRJc9k2AKYRXVg7nUO71VerMa151TTUWwULYyn13kdWYNno06pxj-n78APO3hb6MR09glmrZmU336q1w8TVpJ2_tHkav5L0Nj56AzEut8_zdslHNLs6InRIKhLsSLhj9sHqQ9dOHZDMbXma8NZ2od5QzyhgfLmq3zih9D2Z5iH8azFSsbQtccA86QhOBZvcH6YZ7UHcHP38SYgqoNWhRs51_Tif01UUNu3YFZTvYv4q6CfaGjUvZWZykcQnWHMJb6mo6riHmzBq_6XIujETw"
 		},
 		{
-			"id": "89bbeac8-b261-4ef0-af8f-5ab5647b1626",
+			"id": "fcbfc57a-1e52-40c5-b9fb-b8da615a84d8",
 			"key": "expires_on",
 			"value": "1595707134"
 		},
 		{
-			"id": "25379880-4316-4a83-b608-2100baaf1891",
+			"id": "c7e59200-53f8-4fcf-ba72-32df9b2d4d23",
 			"key": "refresh_token",
 			"value": "AQABAAAAAAAGV_bv21oQQ4ROqh0_1-tAt5jTiNnSAHYi8Ox5w2gxs92daAGLZ1zGh6GRKs_SqKs00RRe8oGl9lswogTu2-z0JfYAMyOs5Oox02KxloP9N21FtnJnT9xcnB9A8IFesIuAD-iFOwVBhkSGO3CFiWtJ8_Xe02OQquheA92Kn3xPikRXFSyA8TyGt1sJ0kQsG5yOJMykgp6aZo4EAcMLaUWYeN-p-_vgxlj6JHeFcqtfZlfCqV7CaOhRVFk4Fc7YskV2ZY9B_V9cnbLx6hsj6ax_9UNx28ua2PIQe3Upet13GfnDuCTC0_FxVcg0weLLzqCCdAY9QaepWjVI5zfa9ocqmjRrkCsyE47VSnRswQteLb0n2AISbUcP-GwgBVD5TffPuuTLFJaksDmHWIc3LNj6nlVBOqCS7Ri_cuR0qglUjXgmpA6c4yqOyyqROtB5kx-iR7uczwSRlpQ4OwC-uAke8XUrwi9pBSy8r1vNjLWEGUpm2uWFxQtK83RiHkxpxDNtFJzGL_4GwB4vOxD_PheLfLWgEo1WdBXSzrHMkZEjL4okkj-GFXfm63MKptcVlV6ZLMCo26BKonLpurRz7fkbsq1ujlpVCQHSVL4jX60lzjd3Ikg2SzCGXkIReAu3n_lkZUaj-8YlPDNki2lNUTkTmoSxGZMoqUKloNxlL1Qjg2E4mwcOW0pnzepX87HzDUT6DeUXxtRHbRiu4Vdd1ppv-HrPQ9yoKduuVEPti_2-A3I_58xAt-nLRnIVRyx22YRV-F481sFBCqlUGhViYwuPVZ0KfaX4Vg65FeYBp1ES9FN0ZJ3MXHgAbJ-TADclbRKnrAgPk1KOYFDuimbl8cgiJLLivyK9vUKJyDrcSuichoaXTe13XHl-0FxcgMsnD0LYwyQGebLIM8ZP2whK2IIVB9Xn-vVxzto-bFM5dBKEr3cpO-frLConqyJptl-OK5QRjp0yPnJ13oW4lDPTmYmLREabLA6F1dMkyYDwBbYsibmcPNvwctQQ5cazUcD0Ls91_NVvpEVAOiM9UHUmnNWj5yBHle3DOR2Wfhc6zW-KVybmHYR9F9Y3PC5DV5pLwuW4wnXec9ucUTGefP9JCqEg2EY1efsPOKVYyiuJpcwFMFEXGiQ66yYlJET2xrtejSF3dCRgwnWMLKaRan7r1XgL73vQ69ZP5jBbUbvd4dykwiDNYtK-HgJg62C0TYfVUNC9Qx-8dm12r6aTNlJFJam1CIblgy7xHQmVIb4zQsJ8Urz8MeywVtuXKDsEfHyJEJggAA"
+		},
+		{
+			"id": "d2c81014-6786-42c3-a950-525b3fc5ec32",
+			"key": "pet_id",
+			"value": 11111111111117066
 		}
 	],
 	"protocolProfileBehavior": {}

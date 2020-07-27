@@ -7,8 +7,6 @@ servers:
 paths:
   /pets:
     get:
-      tags:
-        - pets
       summary: List all pets
       description: List all pets
       operationId: listPets
@@ -43,8 +41,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
-      tags:
-        - pets
       summary: Create a pet
       description: Create a pet
       operationId: createPets
@@ -63,10 +59,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '503':
+          description: Service Unavailable error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/pets/{petId}':
     get:
-      tags:
-        - pets
       summary: Info for a specific pet
       description: Info for a specific pet
       operationId: showPetById
@@ -125,6 +125,8 @@ components:
           type: integer
           format: int32
         message:
+          type: string
+        description:
           type: string
   securitySchemes:
     apiKeyHeader:
